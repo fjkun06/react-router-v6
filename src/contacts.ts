@@ -10,7 +10,7 @@ interface ContactInterface {
 
 export type Contact = ContactInterface[] | null;
 
-export async function getContacts(query?: string) {
+export async function getContacts(query?: string | null) {
   await fakeNetwork(`getContacts:${query}`);
   let contacts: Contact = await localforage.getItem("contacts");
   // let contacts: Array<object> = await localforage.getItem("contacts");
