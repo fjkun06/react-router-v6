@@ -9,6 +9,7 @@ import ErrorPage from "./ErrorPage";
 import Contact, { loader as contactLoader, } from "./routes/Contact";
 import EditContact, { action as editAction } from "./routes/EditContact";
 import {action as contactDeleteAction} from './routes/destroy'
+import Index from "./routes/Index";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
     loader: rootLoader,
     action: rootAction,
     children: [
+      { index: true, element: <Index /> },
       {
         path: "contacts/:contactId",
         element: <Contact />,
@@ -33,7 +35,8 @@ const router = createBrowserRouter([
       },
       {
         path: "contacts/:contactId/destroy",
-        action: contactDeleteAction
+        action: contactDeleteAction,
+        errorElement: <div>Oops! There was an <em>error.</em></div>
 
       }
     ],
