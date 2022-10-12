@@ -6,8 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root, { loader as rootLoader, action as rootAction } from "./routes/Root";
 import ErrorPage from "./ErrorPage";
-import Contact, { loader as contactLoader } from "./routes/Contact";
+import Contact, { loader as contactLoader, } from "./routes/Contact";
 import EditContact, { action as editAction } from "./routes/EditContact";
+import {action as contactDeleteAction} from './routes/destroy'
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
         loader: contactLoader, //same id as contact above so same loader for same data
         action: editAction,
       },
+      {
+        path: "contacts/:contactId/destroy",
+        action: contactDeleteAction
+
+      }
     ],
   },
 ]);

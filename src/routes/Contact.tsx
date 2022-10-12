@@ -1,5 +1,5 @@
-import { Form, useLoaderData } from "react-router-dom";
-import { getContact } from "../contacts";
+import { Form, redirect, useLoaderData } from "react-router-dom";
+import { deleteContact, getContact } from "../contacts";
 
 interface Props {
   contact: {
@@ -27,6 +27,12 @@ export async function loader({ params }: any) {
 // export async function loader({ params }: ContactParams) {
   return getContact(params.contactId);
 }
+
+// export async function action({params}:any){
+
+//   await deleteContact(params.contactId);
+//  return redirect("/");
+// }
 
 export default function Contact() {
   // const contact: ContactMimi = {
