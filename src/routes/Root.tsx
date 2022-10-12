@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Outlet,useLoaderData,Form,redirect } from "react-router-dom";
 import {Contact, createContact, getContacts } from "../contacts";
@@ -21,6 +21,7 @@ interface RootContact{
 export default function Root() {
 // console.log(useLoaderData)
   const {contacts} = useLoaderData() as RootContact;
+  const navigation = useNavigation()
   return (
     <>
       <div id="sidebar">
@@ -82,7 +83,10 @@ export default function Root() {
           )}
         </nav>
       </div>
-      <div id="detail">
+      <div id="detail"  className={
+          navigation.state === "loading" ? "loading" : ""
+        }>
+        
         <Outlet/>
       </div>
     </>
