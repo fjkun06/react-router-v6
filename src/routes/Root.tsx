@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Outlet,useLoaderData,Form,redirect } from "react-router-dom";
 import {Contact, createContact, getContacts } from "../contacts";
 import { ContactMimi } from "./Contact";
@@ -9,8 +10,8 @@ export async function loader(){
 }
 
 export async function action() {
-  await createContact();
-
+  const contact = await createContact();
+  return redirect(`/contacts/${contact.id}/edit`);
 }
 
 interface RootContact{
@@ -52,7 +53,16 @@ export default function Root() {
             <ul>
               {contacts.map((contact) => (
                 <li key={contact.id}>
-                  <Link to={`contacts/${contact.id}`}>
+                 <NavLink
+                    to={`contacts/${contact.id}`}
+                    className={({ isActive, isPending }) =>
+                      isActive
+                        ? "active"
+                        : isPending
+                        ? "pending"
+                        : ""
+                    }
+                  >
                     {contact.first || contact.last ? (
                       <>
                         {contact.first} {contact.last}
@@ -61,7 +71,7 @@ export default function Root() {
                       <i>No Name</i>
                     )}{" "}
                     {contact.favorite && <span>★</span>}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
