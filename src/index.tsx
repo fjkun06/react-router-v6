@@ -20,7 +20,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: rootLoader,
     action: rootAction,
-    children: [
+    children: [{
+      errorElement: <ErrorPage />,
+      children: [
       { index: true, element: <Index /> },
       {
         path: "contacts/:contactId",
@@ -42,8 +44,8 @@ const router = createBrowserRouter([
             Oops! There was an <em>error.</em>
           </div>
         ),
-      },
-    ],
+      },],}
+  ],
   },
 ]);
 root.render(
