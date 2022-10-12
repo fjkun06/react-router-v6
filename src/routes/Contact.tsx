@@ -1,5 +1,16 @@
-import { Form, redirect, useLoaderData } from "react-router-dom";
-import { deleteContact, getContact } from "../contacts";
+import { Form, useFetcher, useLoaderData } from "react-router-dom";
+
+
+import { getContact, updateContact } from "../contacts";
+
+export async function action({ request, params }: any) {
+  let formData = await request.formData();
+  return updateContact(params.contactId, {
+    favorite: formData.get("favorite") === "true",
+  });
+}
+
+
 
 interface Props {
   contact: {
@@ -101,11 +112,12 @@ export default function Contact() {
 const Favorite: React.FC<Props> = ({ contact }) => {
   // yes, this is a `let` for later
   let favorite = contact.favorite;
+  const fetcher = useFetcher();
   return (
-    <Form method="post">
+    <fetcher.Form method="post">
       <button name="favorite" value={favorite ? "false" : "true"} aria-label={favorite ? "Remove from favorites" : "Add to favorites"}>
         {favorite ? "★" : "☆"}
       </button>
-    </Form>
+    </fetcher.Form>
   );
 };

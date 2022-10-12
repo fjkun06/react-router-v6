@@ -6,9 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root, { loader as rootLoader, action as rootAction } from "./routes/Root";
 import ErrorPage from "./ErrorPage";
-import Contact, { loader as contactLoader, } from "./routes/Contact";
+import Contact, { loader as contactLoader, action as contactAction } from "./routes/Contact";
 import EditContact, { action as editAction } from "./routes/EditContact";
-import {action as contactDeleteAction} from './routes/destroy'
+import { action as contactDeleteAction } from "./routes/destroy";
 import Index from "./routes/Index";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
@@ -26,6 +26,7 @@ const router = createBrowserRouter([
         path: "contacts/:contactId",
         element: <Contact />,
         loader: contactLoader,
+        action: contactAction,
       },
       {
         path: "contacts/:contactId/edit",
@@ -36,9 +37,12 @@ const router = createBrowserRouter([
       {
         path: "contacts/:contactId/destroy",
         action: contactDeleteAction,
-        errorElement: <div>Oops! There was an <em>error.</em></div>
-
-      }
+        errorElement: (
+          <div>
+            Oops! There was an <em>error.</em>
+          </div>
+        ),
+      },
     ],
   },
 ]);
