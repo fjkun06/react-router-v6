@@ -1,12 +1,13 @@
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+import { getContact } from "../contacts";
 
-interface Props{
-  contact:{
+interface Props {
+  contact: {
     favorite: boolean;
-  }
+  };
 }
 
-export interface ContactMimi{
+export interface ContactMimi {
   first: string;
   last: string;
   avatar: string;
@@ -16,24 +17,32 @@ export interface ContactMimi{
   id?: string;
 }
 
-export default function Contact() {
-  const contact: ContactMimi = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
+interface ContactParams {
+  params: {
+    contactId: string;
   };
+}
+
+export async function loader({ params }: any) {
+// export async function loader({ params }: ContactParams) {
+  return getContact(params.contactId);
+}
+
+export default function Contact() {
+  // const contact: ContactMimi = {
+  //   first: "Your",
+  //   last: "Name",
+  //   avatar: "https://placekitten.com/g/200/200",
+  //   twitter: "your_handle",
+  //   notes: "Some notes",
+  //   favorite: true,
+  // };
+  const contact = useLoaderData() as ContactMimi;
 
   return (
     <div id="contact">
       <div>
-        <img
-          key={contact.avatar}
-          src={contact.avatar || undefined}
-          alt={contact.avatar}
-        />
+        <img key={contact.avatar} src={contact.avatar || undefined} alt={contact.avatar} />
       </div>
 
       <div>
@@ -50,11 +59,7 @@ export default function Contact() {
 
         {contact.twitter && (
           <p>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={`https://twitter.com/${contact.twitter}`}
-            >
+            <a target="_blank" rel="noreferrer" href={`https://twitter.com/${contact.twitter}`}>
               {contact.twitter}
             </a>
           </p>
@@ -63,7 +68,8 @@ export default function Contact() {
         {contact.notes && <p>{contact.notes}</p>}
 
         <div>
-          <Form action="edit">
+          {/* routes to edit since it thinks its sendx data to edit */}
+          <Form action="edit"> 
             <button type="submit">Edit</button>
           </Form>
           <Form
@@ -72,9 +78,7 @@ export default function Contact() {
             onSubmit={(event) => {
               if (
                 // eslint-disable-next-line no-restricted-globals
-                !confirm(
-                  "Please confirm you want to delete this record."
-                )
+                !confirm("Please confirm you want to delete this record.")
               ) {
                 event.preventDefault();
               }
@@ -93,17 +97,9 @@ const Favorite: React.FC<Props> = ({ contact }) => {
   let favorite = contact.favorite;
   return (
     <Form method="post">
-      <button
-        name="favorite"
-        value={favorite ? "false" : "true"}
-        aria-label={
-          favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
-        }
-      >
+      <button name="favorite" value={favorite ? "false" : "true"} aria-label={favorite ? "Remove from favorites" : "Add to favorites"}>
         {favorite ? "★" : "☆"}
       </button>
     </Form>
   );
-}
+};
