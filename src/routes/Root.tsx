@@ -1,15 +1,17 @@
-import { Link, useNavigation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigation, useSubmit } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Outlet,useLoaderData,Form,redirect } from "react-router-dom";
 import {Contact, createContact, getContacts } from "../contacts";
 import { ContactMimi } from "./Contact";
+import { setQ } from "./fixBackButton";
 
 export async function loader({ request }:any) {
   //basic search params logic
   const url = new URL(request.url);
   const q: string | null = url.searchParams.get("q");
   const contacts = await getContacts(q);
-  return {contacts}
+  return {contacts,q}
 }
 
 export async function action() {
@@ -18,13 +20,20 @@ export async function action() {
 }
 
 interface RootContact{
-  contacts: ContactMimi[]
+  contacts: ContactMimi[],
+  q: string | number
 }
 
 export default function Root() {
 // console.log(useLoaderData)
-  const {contacts} = useLoaderData() as RootContact;
+  const {contacts,q} = useLoaderData() as RootContact;
   const navigation = useNavigation()
+  const submit = useSubmit()
+
+  useEffect(() => {
+    setQ(q)
+  }, [q]);
+
   return (
     <>
       <div id="sidebar">
@@ -37,6 +46,8 @@ export default function Root() {
               placeholder="Search"
               type="search"
               name="q"
+              defaultValue={q}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => submit(e.currentTarget.form)}
             />
             <div
               id="search-spinner"
