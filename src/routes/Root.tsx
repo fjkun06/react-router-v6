@@ -10,6 +10,7 @@ export async function loader(){
 
 export async function action() {
   await createContact();
+
 }
 
 interface RootContact{
