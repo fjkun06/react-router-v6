@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Root,{loader as rootLoader} from './routes/Root';
+import Root,{loader as rootLoader,  action as rootAction,} from './routes/Root';
 import ErrorPage from './ErrorPage';
 import Contact from './routes/Contact';
 
@@ -18,6 +18,7 @@ path: "/",
 element: <Root/>,
 errorElement: <ErrorPage/>,
 loader: rootLoader,
+action: rootAction,
 children: [
   {
     path: "contacts/:contactId",

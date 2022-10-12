@@ -13,6 +13,7 @@ export interface ContactMimi{
   twitter: string;
   notes: string;
   favorite: boolean;
+  id?: string;
 }
 
 export default function Contact() {
